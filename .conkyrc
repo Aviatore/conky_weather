@@ -1,99 +1,45 @@
-lua_load /home/wojtek/conky/draw_bg.lua
-lua_draw_hook_pre draw_bg
 
-alignment top_left
-background no
-border_width 1
-cpu_avg_samples 2
-default_color white
-default_outline_color white
-default_shade_color white
-draw_borders no
-draw_graph_borders yes
-default_color white
-default_shade_color black
-default_outline_color black
-color1 00FF00
-draw_outline no
-draw_shades no
-use_xft yes
-xftfont FreeMono:size=12
-gap_x 10
-gap_y 5
-minimum_size 250 800
-maximum_width 250
-net_avg_samples 2
-no_buffers yes
-out_to_console no
-out_to_stderr no
-extra_newline no
-own_window yes
-own_window_class Conky
-own_window_type desktop
-own_window_transparent yes
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-own_window_argb_visual yes
-#own_window_argb_value 40
-double_buffer yes
-stippled_borders 0
-update_interval 1
-uppercase no
-use_spacer none
-show_graph_scale no
-show_graph_range no
-alignment tl
+conky.config = {
+    lua_load = "/home/m3lk4g/conky/conky_weather/draw_bg.lua",
+    lua_draw_hook_pre = "test",
+    alignment = 'top_right',
+    background = false,
+    border_width = 1,
+    cpu_avg_samples = 2,
+	default_color = 'white',
+    default_outline_color = 'white',
+    default_shade_color = 'white',
+    draw_borders = false,
+    draw_graph_borders = true,
+    draw_outline = false,
+    draw_shades = false,
+    use_xft = true,
+    font = 'DejaVu Sans Mono:size=12',
+    gap_x = 5,
+    gap_y = 60,
+    minimum_height = 300,
+	minimum_width = 300,
+    net_avg_samples = 2,
+    no_buffers = true,
+    out_to_console = false,
+    out_to_stderr = false,
+    extra_newline = false,
+    own_window = true,
+    own_window_transparent = true,
+    own_window_class = 'override',
+    own_window_argb_visual = true,
+    own_window_type = 'desktop',
+    double_buffer = true,
+    stippled_borders = 0,
+    update_interval = 1.0,
+    uppercase = false,
+    use_spacer = 'none',
+    show_graph_scale = false,
+    show_graph_range = false
+}
 
-TEXT
-
-$nodename - $kernel
-#
-${voffset 8}${color FF6600}${font caviar dreams:size=16}${time %A}${font}${voffset -10}${color FFFFFF}${font caviar dreams:size=38}${alignr}${time %e}${font}
-${color FFFFFF}${voffset -30}${color FFFFFF}${font caviar dreams:size=18}${time %b}${font}${voffset -3} ${color FFFFFF}${font caviar dreams:size=20}${time %Y}${font}${color FF6600} ${hr}
-
-${voffset 0}${color FFA300}${font size=10}Hardware ${hr}${font}
-
-
-
-
-
-${font FreeMono:size=9}${voffset 5}${offset 2}$color ${cpu cpu1}%${font}
-${color FFA300}${font FreeMono:size=9}${voffset -7}${offset 3}CPU1${offset 9}${font}
-${font FreeMono:size=9}${voffset -33}${offset 53}$color ${cpu cpu2}%${font}
-${color FFA300}${font FreeMono:size=9}${voffset -7}${offset 53}CPU2${offset 9}${font}
-${font FreeMono:size=9}${voffset -33}${offset 95}$color +${ibm_temps 0}°C${font}
-${color FFA300}${font FreeMono:size=9}${voffset -7}${offset 105}CPU${offset 9}${font}
-${color FFA300}${font FreeMono:size=9}${voffset -10}${offset 102}temp${offset 9}${font}
-${font FreeMono:size=9}${voffset -43}${offset 148}$color ${ibm_fan}${font FreeMono:size=7}RPM${font}
-${color FFA300}${font FreeMono:size=9}${voffset -9}${offset 156}CPU${offset 9}${font}
-${color FFA300}${font FreeMono:size=9}${voffset -10}${offset 156}fan${offset 9}${font}
-${font FreeMono:size=9}${voffset -43}${offset 204}$color ${memperc}%${font}
-${color FFA300}${font FreeMono:size=9}${voffset -7}${offset 207}MEM${offset 9}${font}
-${font FreeMono:size=9}${voffset 5}/ 
-used: ${color lightgrey}${font FreeMono:size=9}${fs_used}${font FreeMono:size=9}${color FFA300}${alignr}free: ${color lightgrey}${font FreeMono:size=9}${fs_free}${font}
-${color FFA300}${font size=10}Network ${hr}${font}
-${texeci 1800 ~/Dokumenty/Weather/weather}
-${color FFA300}IP: $color${if_existing /sys/devices/pci0000:00/0000:00:1c.1/0000:03:00.0/net/wlan0/operstate up}${addr wlan0}${font FreeMono:size=8}${alignr}WiFi${font}${else}${if_existing /sys/devices/pci0000:00/0000:00:19.0/net/eth0/operstate up}${addr eth0}${font FreeMono:size=8}${alignr}Ethernet${font}${endif}${endif}
-${color FFA300}Down:${color} ${if_existing /sys/devices/pci0000:00/0000:00:1c.1/0000:03:00.0/net/wlan0/operstate up}${downspeedf wlan0} ${color lightgrey}kiB${alignr}${totaldown wlan0}
-${color FFA300}${downspeedgraph wlan0 20,250 FFFF00 FF0000}${else}${if_existing /sys/devices/pci0000:00/0000:00:19.0/net/eth0/operstate up}${downspeedf eth0} ${color lightgrey}kiB${alignr}${totaldown eth0}
-${color FFA300}${downspeedgraph eth0 20,250 FFFF00 FF0000}${else}${voffset 40}${endif}${endif}
-${color FFA300}Up:${color} ${if_existing /sys/devices/pci0000:00/0000:00:1c.1/0000:03:00.0/net/wlan0/operstate up}${upspeedf wlan0} ${color lightgrey}kiB${alignr}${totalup wlan0}
-${color FFA300}${upspeedgraph wlan0 20,250 FFFF00 FF0000}${color}${else}${if_existing /sys/devices/pci0000:00/0000:00:19.0/net/eth0/operstate up}${upspeedf eth0} ${color lightgrey}kiB${alignr}${totalup eth0}
-${color FFA300}${upspeedgraph eth0 20,250 FFFF00 FF0000}${color}${else}${voffset 40}${endif}${endif}
-${voffset 0}${color FFA300}${font size=10}KRAKÓW ${hr 4}${font}
-${voffset 0}${offset 9}${color FFA300}${font caviar dreams:size=20}${color lightgrey}${texeci 60 ~/Dokumenty/Weather/temp}
-${voffset 90}${color FFA300}${font Purisa}${color}${alignc}${texeci 60 ~/Dokumenty/Weather/weather_test}${font}
-${voffset 5}${color FFA300}Wind speed:${offset 9}${color}${font FreeMono:size=10}${texeci 60 ~/Dokumenty/Weather/wind_speed}${font}
-${voffset 5}${color FFA300}Wind direction:${offset 9}${color}${font FreeMono:size=10}${texeci 60 ~/Dokumenty/Weather/wind_direction}${font}
-${voffset 5}${color FFA300}Pressure:${offset 9}${color}${font FreeMono:size=10}${texeci 60 ~/Dokumenty/Weather/pressure}${font}
-${voffset 5}${color FFA300}Visibility:${offset 9}${color}${font FreeMono:size=10}${texeci 60 ~/Dokumenty/Weather/visibility}${font}
-${voffset 10}${color FFA300}Time of measurement: 
-${font FreeMono:size=10}${color lightgrey}$color${texeci 60 ~/Dokumenty/Weather/weather_date}
-${color lightgrey}$color${texeci 60 ~/Dokumenty/Weather/weather_time}${font}
-${image ~/Dokumenty/Weather/pics_f/orb.png -p 80,490 -f 70}
-${image ~/Dokumenty/Weather/pics_f/sky.png -p 55,480 -f 70}
-#
-
-
-
-
-
+conky.text = [[
+${color orange}${font Paduk:size=10}WEATHER FORECAST ${hr 2}${color}
+${image /home/m3lk4g/conky/conky_weather/icons/new/Images/new/03n.png -p 0,30 -s 87x60}
+${color orange}${font Paduk:size=20}${offset 100}6°C
+]]

@@ -1,10 +1,29 @@
 corner_r=45
-bg_colour=0x000000
+bg_colour=0xff0000
 bg_alpha=0.2
 
 require 'cairo'
 function rgb_to_r_g_b(colour,alpha)
 	return ((colour / 0x10000) % 0x100) / 255., ((colour / 0x100) % 0x100) / 255., (colour % 0x100) / 255., alpha
+end
+
+function conky_test()
+	if conky_window==nil then return end
+	local w=conky_window.width
+	local h=conky_window.height
+	local cs=cairo_xlib_surface_create(conky_window.display, conky_window.drawable, conky_window.visual, w, h)
+	cr=cairo_create(cs)
+  
+   cairo_set_line_width(cr, 1)
+   cairo_set_source_rgba(cr, 1, 1, 0, 1)
+   cairo_move_to (cr, 200, 200)
+    local val = tonumber(conky_parse("${cpu}"))
+   cairo_line_to(cr, 200 - val * 3, 200)
+   cairo_stroke (cr)
+
+    cairo_destroy(cr)
+    cairo_surface_destroy(cs)
+    cr = nil
 end
 
 function conky_draw_bg()
