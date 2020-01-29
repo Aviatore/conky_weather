@@ -1,0 +1,59 @@
+
+conky.config = {
+    alignment = 'top_right',
+    background = false,
+    border_width = 1,
+    border_outer_margin = 30,
+    cpu_avg_samples = 2,
+	default_color = 'white',
+    default_outline_color = 'white',
+    default_shade_color = 'white',
+    draw_borders = false,
+    draw_graph_borders = true,
+    draw_outline = false,
+    draw_shades = false,
+    use_xft = true,
+    font = 'DejaVu Sans Mono:size=12',
+    gap_x = 50,
+    gap_y = 50,
+    minimum_height = 500,
+	minimum_width = 488,
+    net_avg_samples = 2,
+    no_buffers = true,
+    out_to_console = false,
+    out_to_stderr = false,
+    extra_newline = false,
+    own_window = true,
+    own_window_transparent = true,
+    own_window_class = 'override',
+    own_window_argb_visual = false,
+    own_window_type = 'desktop',
+    double_buffer = true,
+    stippled_borders = 0,
+    update_interval = 1.0,
+    uppercase = false,
+    use_spacer = 'none',
+    show_graph_scale = false,
+    show_graph_range = false
+}
+
+conky.text = [[
+${image bck2.png}
+${offset 25}${color orange}${font Abyssinica SIL:size=10}POGODA [Kraków, PL] ${hr 2}${color}
+${image icons/new/Images/new/04_1d.png -p 5,50 -s 140x96}
+${color gray}${font DejaVu Sans Mono:size=10}${offset 155}Temperatura: ${color orange}6°C
+${color gray}${font DejaVu Sans Mono:size=10}${offset 155}Ciśnienie: ${color orange}1013 hPa
+${color gray}${font DejaVu Sans Mono:size=10}${offset 155}Prędkość wiatru: ${color orange}5 m/s${goto 0}${alignr 25}${font DejaVu Sans Mono:size=10}16°C
+${color gray}${font DejaVu Sans Mono:size=10}${offset 155}pm10: ${color orange}10 µg/m3${goto 0}${alignr 10}${font DejaVu Sans Mono:size=10}10 m/s
+${color gray}${font DejaVu Sans Mono:size=10}${offset 155}Czas pomiaru: ${color orange}12:32
+${color gray}${font DejaVu Sans Mono:size=9}${offset 5}${voffset 5}Całkowite zachmurzenie
+${image icons/new/Images/new/09d.png -p 320,80 -s 105x72}
+${color gray}${font DejaVu Sans Mono:size=9}${offset 50}${voffset 25}Pon 12.01${offset 120}Wt 13.01${offset 110}Śr 14.01
+${alignr 300}${voffset 15}${color orange}${font DejaVu Sans Mono:size=10}16°C${alignr 160}16°C${alignr 25}16°C
+${alignr 244}${color orange}${font DejaVu Sans Mono:size=10}10 m/s${alignr 128}5 m/s${alignr 9}15 m/s
+
+${image icons/new/Images/new/02d.png -p 5,220 -s 87x60}
+${image icons/new/Images/new/04_2d.png -p 170,220 -s 87x60}
+${image icons/new/Images/new/10d.png -p 340,220 -s 87x60}
+
+]]

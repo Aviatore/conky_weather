@@ -1,6 +1,6 @@
 corner_r=45
-bg_colour=0xff0000
-bg_alpha=0.2
+bg_colour=0x000000
+bg_alpha=0.5
 
 require 'cairo'
 function rgb_to_r_g_b(colour,alpha)
