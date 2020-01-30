@@ -28,6 +28,27 @@ class Parser(HTMLParser):
                     self.c = 0
 
 
+class AGHParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.data = {}
+        self.parameters = ["Temperatura powietrza", "Ciśnienie atmosferyczne", "Prędkość wiatru", "pm 10"]
+        self.grabPrameter = 0
+        self.grabValue = 0
+        self.tmp = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "td":
+            self.grabParameter = 1
+        elif tag == "span"
+
+    def handle_data(self, data):
+        if self.grabParameter and data in self.parameters:
+            self.tmp.append(data)
+        elif self.grabValue and self
+
+
+url_agh = "http://meteo.ftj.agh.edu.pl/main"
 url = "https://www.meteoblue.com/pl/pogoda/tydzie%C5%84/krak%C3%B3w_polska_3094802"
 
 p = Parser()
