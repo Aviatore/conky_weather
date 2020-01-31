@@ -1,32 +1,7 @@
 import urllib.request
 from html.parser import HTMLParser
 import re
-
-
-class Parser(HTMLParser):
-    def __init__(self):
-        super().__init__()
-        self.data = {}
-        self.day = ""
-        self.c = 0
-
-    def pr(self):
-        for key in self.data.keys():
-            print(key, self.data[key])
-
-    def handle_starttag(self, tag, attrs):
-        if tag == "div":
-            for atr in attrs:
-                if atr[1] in ["day1", "day2", "day3"]:
-                    self.day = atr[1]
-                    self.c = 1
-
-        if tag == "img":
-            for atr in attrs:
-                if atr[1] == "weather_pictogram": self.c = 1
-                if self.c == 1 and atr[0] == "title":
-                    self.data[self.day] = atr[1]
-                    self.c = 0
+import json
 
 
 class AGHParser(HTMLParser):
@@ -34,28 +9,21 @@ class AGHParser(HTMLParser):
         super().__init__()
         self.data = {}
         self.parameters = ["Temperatura powietrza", "Ciśnienie atmosferyczne", "Prędkość wiatru", "pm 10"]
-        self.grabParameter = 0
         self.grabValue = 0
-        self.tmp = ["", 0, ""]
+        self.tmp = ["", 0, ""] # [0] - nazwa parametru, [1] - liczba wystąpień tagu <span>, [2] - wartość parametru
 
     def handle_starttag(self, tag, attrs):
-        if tag == "td":
-            self.grabParameter = 1
-        elif tag == "span" and self.tmp[0] != "" and self.tmp[1] < 2:
+        if tag == "span" and self.tmp[0] != "" and self.tmp[1] < 2:
             self.tmp[1] += 1
             if self.tmp[1] == 2:
                 self.grabValue = 1
-            
-
 
     def handle_data(self, data):
-        if self.grabParameter and data in self.parameters:
+        if data in self.parameters:
             self.tmp[0] = data
-            self.grabParameter = 0
         elif self.grabValue:
             self.tmp[2] = data.rstrip()
             self.grabValue = 0
-            self.grabParameter = 0
             r = re.compile(r'\s')
             
             tmp = r.split(self.tmp[2])
@@ -69,18 +37,38 @@ class AGHParser(HTMLParser):
 
             self.data[self.tmp[0]] = self.tmp[2]
 
-#            print("DEBUG", self.tmp[2], self.tmp[0])
             self.tmp = ["", 0, ""]
 
 
 
+class Weather():
+    def __init__(self, url):
+        self.url = url
+        self.data = {}
+    
+    def parse(self):
+        with open("data.json", 'r') as f:
+            data = f.read()
+        
+        dataDict = json.loads(data)
+        
+        self.data["currDesc"] = dataDict["list"][0]["weather"][0]["description"]
+        self.data["currIcon"] = dataDict["list"][0]["weather"][0]["icon"]
+        self.data["currDate"] = [d for d in dataDict["list"][0]["dt_txt"].split(" ")]
+
+        for t in dataDict["list"]:
+            if t["dt_txt"].split(" ")[0] == self.data["currDate"][0] and t["dt_txt"].split(" ")[1] == "00:00:00":
+                self.data["currNightDesc"] = t["weather"][0]["description"]
+                self.data["currNightIcon"] = t["weather"][0]["icon"]
+                self.data["currNightDate"] = [d for f in t["weather"][0]["dt_txt"].split(" ")]
+
+
 url_agh = "http://meteo.ftj.agh.edu.pl/main"
-url = "https://www.meteoblue.com/pl/pogoda/tydzie%C5%84/krak%C3%B3w_polska_3094802"
 
-p = AGHParser()
+agh = AGHParser()
 
-resp = urllib.request.urlopen(url_agh)
-outputRaw = resp.read().decode('utf-8')
+agh_resp = urllib.request.urlopen(url_agh)
+agh_outputRaw = agh_resp.read().decode('utf-8')
 
-p.feed(outputRaw)
-print(p.data["pm 10"])
+agh.feed(agh_outputRaw)
+print(agh.data["pm 10"])
