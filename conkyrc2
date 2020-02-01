@@ -40,6 +40,7 @@ conky.config = {
 conky.text = [[
 ${image bck2.png}
 ${offset 25}${color orange}${font Abyssinica SIL:size=10}POGODA [Kraków, PL] ${hr 2}${color}
+
 ${image icons/new/Images/new/04_1d.png -p 5,50 -s 140x96}
 ${color gray}${font DejaVu Sans Mono:size=10}${offset 155}Temperatura: ${color orange}6°C
 ${color gray}${font DejaVu Sans Mono:size=10}${offset 155}Ciśnienie: ${color orange}1013 hPa
