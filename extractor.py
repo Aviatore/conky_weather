@@ -206,17 +206,18 @@ ${{image icons/new/Images/new/{}.png -p 340,220 -s 87x60}}
     with open("weather.txt", 'w') as f:
         f.write(outputString)
 
+
 def main():
     weather = getWeatherData()
     weather_counter_tmp = time.time()
     while True:
         t = time.time()
-        if (weather_counter_tmp - t) >= 3600:
+        if (t - weather_counter_tmp) >= 3600:
             weather = getWeatherData()
             weather_counter_tmp = t
         agh = getAGHData()
         printOutput(agh, weather)
-        time.sleep(60)
+        time.sleep(300)
 
 
 if __name__ == '__main__':
