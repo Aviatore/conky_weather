@@ -145,6 +145,13 @@ def getWeatherData():
     weather.parse()
     return weather
 
+def setPosition(prevString, stringStdLen):
+    s = 0
+    arLen = len(prevString)
+    for i in prevString:
+        s += len(i)
+    return (s - (arLen * stringStdLen)) * 7 # 7 - szerokość pojedynczego znaku w pikselach; 5 - liczba znaków dla referencyjnej temp., np. 1.2°C
+
 def printOutput(agh, weather):
     print("Printing weather.txt file ...")
     outputString = """
@@ -157,8 +164,8 @@ ${{color gray}}${{font DejaVu Sans Mono:size=9}}${{offset 155}}Czas pomiaru: ${{
 ${{color gray}}${{font DejaVu Sans Mono:size=9}}${{offset 5}}${{voffset 5}}{}${{goto 0}}${{offset 380}}${{font DejaVu Sans Mono:size=7}}{}
 ${{image icons/new/Images/new/{}.png -p 340,80 -s 87x60}}
 ${{goto 0}}${{color gray}}${{font DejaVu Sans Mono:size=9}}${{offset 100}}${{voffset 25}}{}${{goto 0}}${{offset 260}}{}${{goto 0}}${{offset 410}}{}
-${{alignr 276}}${{voffset 15}}${{color orange}}${{font DejaVu Sans Mono:size=9}}{}${{alignr 146}}{}${{alignr 24}}{}
-${{alignr 227}}${{color orange}}${{font DejaVu Sans Mono:size=9}}{}${{alignr 125}}{}${{alignr 9}}{}
+${{alignr {}}}${{voffset 15}}${{color orange}}${{font DejaVu Sans Mono:size=9}}{}${{alignr {}}}{}${{alignr 24}}{}
+${{alignr {}}}${{color orange}}${{font DejaVu Sans Mono:size=9}}{}${{alignr {}}}{}${{alignr 9}}{}
 ${{goto 0}}${{color gray}}${{font DejaVu Sans Mono:size=7}}${{offset 60}}${{voffset 25}}{}${{goto 0}}${{offset 220}}{}${{goto 0}}${{offset 380}}{}
 
 ${{image icons/new/Images/new/{}.png -p 5,220 -s 87x60}}
@@ -178,10 +185,14 @@ ${{image icons/new/Images/new/{}.png -p 340,220 -s 87x60}}
            weather.formatDate(weather.data["nextDay1Date"][0]),
            weather.formatDate(weather.data["nextDay2Date"][0]),
            weather.formatDate(weather.data["nextDay3Date"][0]),
+           283 + setPosition([weather.data["nextDay2Temp"], weather.data["nextDay3Temp"]], 5),
            weather.data["nextDay1Temp"],
+           153 + setPosition([weather.data["nextDay3Temp"]], 5),
            weather.data["nextDay2Temp"],
            weather.data["nextDay3Temp"],
+           227 + setPosition([weather.data["nextDay2Wind"], weather.data["nextDay3Wind"]], 7),
            weather.data["nextDay1Wind"],
+           125 + setPosition([weather.data["nextDay3Wind"]], 7),
            weather.data["nextDay2Wind"],
            weather.data["nextDay3Wind"],
            weather.data["nextDay1Desc"],
