@@ -141,16 +141,24 @@ def getAGHData():
 def getWeatherData():
     urlForecast = 'http://api.openweathermap.org/data/2.5/forecast?id=3094802&APPID=8a4f646122f8a3b175de60d3f6669c20&units=metric&lang=pl'
     urlWeather = 'http://api.openweathermap.org/data/2.5/weather?id=3094802&APPID=8a4f646122f8a3b175de60d3f6669c20&units=metric&lang=pl'
+#    urlWeather = 'http://api.openweathermap.org/data/2.5/weather?id=294098&APPID=8a4f646122f8a3b175de60d3f6669c20&units=metric&lang=pl'
+#    urlForecast = 'http://api.openweathermap.org/data/2.5/forecast?id=294098&APPID=8a4f646122f8a3b175de60d3f6669c20&units=metric&lang=pl'
     weather = Weather(urlForecast, urlWeather)
     weather.parse()
     return weather
 
 def setPosition(prevString, stringStdLen):
     s = 0
+    if prevString[0][-1] == "C":
+        s1 = 5
+    else:
+        s1 = 7 # liczba znaków dla np. '2.1 m/s'; dla tej wartości ustalano pierwotny offset, który jest powiększany o wartość zwracaną przez tę funkcję
+
     arLen = len(prevString)
     for i in prevString:
         s += len(i)
-    return (s - (arLen * stringStdLen)) * 7 # 7 - szerokość pojedynczego znaku w pikselach; 5 - liczba znaków dla referencyjnej temp., np. 1.2°C
+
+    return (s - (arLen * stringStdLen)) * 7 - (((len(prevString[0]) - s1) * 7) * arLen) # 7 - szerokość pojedynczego znaku w pikselach; 5 - liczba znaków dla referencyjnej temp., np. 1.2°C
 
 def printOutput(agh, weather):
     print("Printing weather.txt file ...")
@@ -185,12 +193,12 @@ ${{image icons/new/Images/new/{}.png -p 340,220 -s 87x60}}
            weather.formatDate(weather.data["nextDay1Date"][0]),
            weather.formatDate(weather.data["nextDay2Date"][0]),
            weather.formatDate(weather.data["nextDay3Date"][0]),
-           283 + setPosition([weather.data["nextDay2Temp"], weather.data["nextDay3Temp"]], 5),
+           283 + setPosition([weather.data["nextDay2Temp"], weather.data["nextDay3Temp"]], len(weather.data["nextDay3Temp"])),
            weather.data["nextDay1Temp"],
-           153 + setPosition([weather.data["nextDay3Temp"]], 5),
+           153 + setPosition([weather.data["nextDay3Temp"]], len(weather.data["nextDay3Temp"])),
            weather.data["nextDay2Temp"],
            weather.data["nextDay3Temp"],
-           227 + setPosition([weather.data["nextDay2Wind"], weather.data["nextDay3Wind"]], 7),
+           227 + setPosition([weather.data["nextDay2Wind"], weather.data["nextDay3Wind"]], len(weather.data["nextDay3Wind"])),
            weather.data["nextDay1Wind"],
            125 + setPosition([weather.data["nextDay3Wind"]], 7),
            weather.data["nextDay2Wind"],
